@@ -1,7 +1,7 @@
 def recursive(n,a,b):
 	if n == 0: return
 	recursive(n-1,a,3-a-b)
-	# A, B = chr(65+a), chr(65+b)
+	A, B = chr(65+a), chr(65+b)
 	print('from',A,"move to",B,'--',n,'th disk')
 	recursive(n-1,3-a-b,b)
 
