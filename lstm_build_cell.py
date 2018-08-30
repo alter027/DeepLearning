@@ -51,7 +51,7 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 """### LSTM"""
 
 class LSTMCELL(nn.Module):
-    def __init__(self, hidden_size):
+    def __init__(self, input_size, hidden_size):
         super().__init__()
         self.i2h = nn.Linear(input_size, 4*hidden_size).cuda()
         self.h2h = nn.Linear(hidden_size, 4*hidden_size).cuda()
@@ -72,7 +72,7 @@ class LSTMCELL(nn.Module):
 class LSTM(nn.Module):
 	def __init__(self, input_size, hidden_size, num_layers):
 		super(LSTM,self).__init__()
-		self.CELLs = [LSTMCELL(hidden_size) for i in range(input_size)]
+		self.CELLs = [LSTMCELL(input_size, hidden_size) for i in range(input_size)]
 	def forward(self, input, c, h):
 		result = []
 		for i, CELL in enumerate(self.CELLs):
