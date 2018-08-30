@@ -53,7 +53,7 @@ test_loader = torch.utils.data.DataLoader(dataset=test_dataset,
 class LSTMCELL(nn.Module):
     def __init__(self, hidden_size):
         super().__init__()
-        self.i2h = nn.Linear(28,4*hidden_size).cuda()
+        self.i2h = nn.Linear(input_size, 4*hidden_size).cuda()
         self.h2h = nn.Linear(hidden_size, 4*hidden_size).cuda()
     def forward(self, input, c, h):
         preactivations = self.i2h(input)
@@ -61,8 +61,8 @@ class LSTMCELL(nn.Module):
             preactivations += self.h2h(h)
         gate = [] # input, output, forget, transform
         for i in range(3):
-            gate.append(torch.sigmoid(preactivations[:,i*hidden_size:(i+1)*hidden_size]).cuda())
-        gate.append(torch.tanh(preactivations[:,3*hidden_size:]).cuda())
+            gate.append(torch.sigmoid(preactivations[:, i*hidden_size:(i+1)*hidden_size]).cuda())
+        gate.append(torch.tanh(preactivations[:, 3*hidden_size:]).cuda())
         memunit = gate[0]*gate[3] 
         if c is not None:
             memunit += gate[2]*c 
@@ -76,7 +76,7 @@ class LSTM(nn.Module):
 	def forward(self, input, c, h):
 		result = []
 		for i, CELL in enumerate(self.CELLs):
-			next_h,next_c = CELL(input[:,i,:],c,h)
+			next_h, next_c = CELL(input[:,i,:], c, h)
 			result.append(next_h)
 			c, h = next_c, next_h
 		return result
