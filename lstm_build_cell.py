@@ -70,16 +70,16 @@ class LSTMCELL(nn.Module):
         return hidunit, memunit
 
 class LSTM(nn.Module):
-	def __init__(self, input_size, hidden_size, num_layers):
-		super(LSTM,self).__init__()
-		self.CELLs = [LSTMCELL(input_size, hidden_size) for i in range(input_size)]
-	def forward(self, input, c, h):
-		result = []
-		for i, CELL in enumerate(self.CELLs):
-			next_h, next_c = CELL(input[:,i,:], c, h)
-			result.append(next_h)
-			c, h = next_c, next_h
-		return result
+    def __init__(self, input_size, hidden_size, num_layers):
+        super(LSTM,self).__init__()
+        self.CELLs = [LSTMCELL(input_size, hidden_size) for i in range(input_size)]
+    def forward(self, input, c, h):
+        result = []
+        for i, CELL in enumerate(self.CELLs):
+            next_h, next_c = CELL(input[:,i,:], c, h)
+            result.append(next_h)
+            c, h = next_c, next_h
+        return result
 
 """### RNN"""
 
